@@ -131,7 +131,7 @@ namespace LoginForm.ViewModel
         {
             CurrentUserModel = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
 
-            if (CurrentUserModel == null && CurrentUserModel.CategoryId == 3) 
+            if (CurrentUserModel.CategoryId == 1) 
             {
                 VisibilityAdmin = Visibility.Hidden;
                 VisibilityWorker = Visibility.Hidden;
@@ -141,7 +141,7 @@ namespace LoginForm.ViewModel
                 VisibilityAdmin = Visibility.Hidden;
                 VisibilityWorker = Visibility.Visible;
             }
-            else
+            else if (CurrentUserModel.CategoryId == 3)
             {
                 VisibilityAdmin = Visibility.Visible;
                 VisibilityWorker = Visibility.Visible;

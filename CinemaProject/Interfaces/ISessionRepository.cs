@@ -19,6 +19,7 @@ namespace LoginForm.Interfaces
         public ObservableCollection<SessionModel> GetByDate(DateTime date);
         public ObservableCollection<SessionModel> GetByName(string name);
         public SessionModel SearchSession(string name, DateTime date);
+        public ObservableCollection<SessionModel> GetAllByDate(DateTime date);
         public List<HallModel> GetAllHalls();
         public List<FilmModel> GetAllFilms();
 

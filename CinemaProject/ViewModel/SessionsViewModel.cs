@@ -130,7 +130,7 @@ namespace LoginForm.ViewModel
 
         private void ExecuteSearchSessionViewCommand(object obj)
         {
-            AllSessions = sessionRepository.GetByDate(SearchDate);
+            AllSessions = sessionRepository.GetAllByDate(SearchDate);
         }
 
         private void loadData()

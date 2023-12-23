@@ -53,6 +53,29 @@ namespace LoginForm.Repositories
             return db.Films.Include(u => u.Genre).ToList().Select(i => new FilmModel(i)).ToList();
         }
 
+        public ObservableCollection<SessionModel> GetAllByDate(DateTime date)
+        {
+            DateTime endDate = date.Date.AddDays(1).AddTicks(-1);
+            List<SessionModel> session = db.Sessions
+                .Where(i => i.Date >= date && i.Date <= endDate)
+                .Select(i => new SessionModel
+                {
+                    Id = i.Id,
+                    Date = i.Date,
+                    Name = i.Film.Name,
+                    Duration = i.Film.Duration,
+                    DurationTime = TimeSpan.FromMinutes(i.Film.Duration),
+                    Genres = i.Film.Genre.Name,
+                    HallId = i.HallId,
+                    FilmId = i.FilmId,
+                    Poster = i.Film.Poster,
+                    Halls = i.Hall.Number,
+                })
+                 .ToList();
+            ObservableCollection<SessionModel> sessions = new ObservableCollection<SessionModel>(session);
+            return sessions;
+        }
+
         public ObservableCollection<SessionModel> GetByDate(DateTime date)
         {
             DateTime endDate = date.Date.AddDays(1).AddTicks(-1);
@@ -164,7 +187,7 @@ namespace LoginForm.Repositories
             if (date > f.EndDate || date < f.StartDate)
                 return false;
             var request = db.Sessions
-                .Where(i => i.HallId == hall && i.Date >= startDate && i.Date <= endDate).FirstOrDefault();
+                .Where(i => i.HallId == hall && i.Date < endDate && i.Date.AddMinutes(i.Film.Duration) > startDate).FirstOrDefault();
             if (request == null)
                 return true;
             else
