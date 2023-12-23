@@ -1,0 +1,203 @@
+﻿<Window x:Class="LoginForm.View.AddFilmView"
+        x:Name="AddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LoginForm.View"
+        xmlns:viewModel="clr-namespace:LoginForm.ViewModel"
+        mc:Ignorable="d"
+        Title="AddFilmView" Height="510" Width="400"
+        MouseDown="Window_MouseDown"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True">
+
+    <Window.DataContext>
+        <viewModel:FilmsViewModel/>
+    </Window.DataContext>
+
+    <!--second VM-->
+    <Window.Resources>
+        <viewModel:AddViewModel x:Key="AddVM"/>
+    </Window.Resources>
+
+    <Border CornerRadius="10" Background="{StaticResource BackColor}"
+        BorderBrush="{StaticResource BorderColor}" BorderThickness="3">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Добавить/изменить фильм" Foreground="{StaticResource FontColor}"
+                       FontSize="15" FontFamily="Montserrat"
+                       Grid.Column="0" VerticalAlignment="Center"
+                       Margin="10, 0, 0, 0"/>
+                <Button x:Name="btnMinimize" Grid.Column="1" Content="-"
+                    Cursor="Hand" FontFamily="Montserrat" FontSize="16"
+                    BorderThickness="0" Foreground="Black"
+                    Click="btnMinimize_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background"
+                                Value="{StaticResource ButtonColorLight}"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource ButtonColorSelect}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="25" Height="25"
+                                CornerRadius="3"
+                                Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+                <Button x:Name="btnClose" Grid.Column="2" Content="X"
+                    Cursor="Hand" FontFamily="Montserrat" FontSize="12"
+                     BorderThickness="0" Foreground="Black"
+                    Click="btnClose_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background"
+                                Value="{StaticResource ButtonColorDark}"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource ButtonColorSelect}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="25" Height="25"
+                                CornerRadius="3"
+                                Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+                <Image Width="120" Height="160" Margin="5">
+                    <Image.Source>
+                        <Binding Path="Poster"/>
+                    </Image.Source>
+                </Image>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Постер" Style="{StaticResource txtAccount}"/>
+                    <Button x:Name="btnImage" Grid.Column="1" Content="Выбрать фото"
+                            Cursor="Hand" FontFamily="Montserrat" FontSize="11"
+                            BorderThickness="0" Foreground="Black"
+                            Command="{Binding UploadImageCommand}" Margin="15,0,0,0">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="{StaticResource ButtonColorLight}"/> 
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource ButtonColorSelect}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="150" Height="22"
+                                        CornerRadius="3"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Название" Style="{StaticResource txtAccount}"/>
+                    <TextBox Style="{StaticResource txtboxAccount}"
+                             Text="{Binding Name}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Жанр" Style="{StaticResource txtAccount}"/>
+                    <ComboBox Width="150" Margin="15,0,0,0" ItemsSource="{Binding Genres}"
+                              DisplayMemberPath="Name" SelectedValuePath="Id" x:Name="txtGenre"
+                              SelectedValue="{Binding GenreId, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Длительность" Style="{StaticResource txtAccount}"/>
+                    <TextBox Style="{StaticResource txtboxAccount}"
+                             Text="{Binding Duration}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Начало проката" Style="{StaticResource txtAccount}"/>
+                    <DatePicker Width="150" Margin="15,0,0,0"
+                                SelectedDate="{Binding StartDate}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Конец проката" Style="{StaticResource txtAccount}"/>
+                    <DatePicker Width="150" Margin="15,0,0,0"
+                                SelectedDate="{Binding EndDate}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Режиссер" Style="{StaticResource txtAccount}"/>
+                    <TextBox Style="{StaticResource txtboxAccount}"
+                             Text="{Binding Director}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Страна" Style="{StaticResource txtAccount}"/>
+                    <TextBox Style="{StaticResource txtboxAccount}"
+                             Text="{Binding Country}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Страна" Style="{StaticResource txtAccount}"/>
+                    <TextBox Style="{StaticResource txtboxAccount}"
+                             Text="{Binding Plot}"/>
+                </StackPanel>
+
+                <!--<TextBlock Text="{Binding Error}" Style="{StaticResource txtAccount}"
+                           Margin="0,10,0,5" Width="250"/>-->
+            </StackPanel>
+
+            <Button Grid.Row="1" Style="{StaticResource CRUDButton}" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom" Content="OK"
+                    CommandParameter="{Binding ElementName=AddWindow}"
+                    Command="{Binding Source={StaticResource AddVM}, Path=OkCommand}">
+            </Button>
+        </Grid>
+    </Border>
+</Window>

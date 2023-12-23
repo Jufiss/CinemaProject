@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoginForm", "CinemaProject\LoginForm.csproj", "{914ABD93-B529-4172-AEA8-9D394A2D5E62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginForm.Tests", "LoginForm.Tests\LoginForm.Tests.csproj", "{1D9C4D55-BCD6-458F-B0F9-0955C33977BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{914ABD93-B529-4172-AEA8-9D394A2D5E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{914ABD93-B529-4172-AEA8-9D394A2D5E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{914ABD93-B529-4172-AEA8-9D394A2D5E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{914ABD93-B529-4172-AEA8-9D394A2D5E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D9C4D55-BCD6-458F-B0F9-0955C33977BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D9C4D55-BCD6-458F-B0F9-0955C33977BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D9C4D55-BCD6-458F-B0F9-0955C33977BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D9C4D55-BCD6-458F-B0F9-0955C33977BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {921AFEF5-5B91-46D3-BDAE-873E757776E4}
+	EndGlobalSection
+EndGlobal

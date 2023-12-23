@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="LoginForm.View.ReportMoneyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
+             xmlns:local="clr-namespace:LoginForm.View"
+             xmlns:viewModel="clr-namespace:LoginForm.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <viewModel:ReportMoneyViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+    FlowDirection="LeftToRight"
+    Orientation="Horizontal">
+            <TextBlock Text="с :"
+       Foreground="Black"
+       FontSize="12"
+       FontWeight="Medium"
+       FontFamily="Montserrat"
+       VerticalAlignment="Center"
+               Margin="10,0,0,0"/>
+
+            <DatePicker x:Name="txtData"
+            SelectedDate="{Binding StartDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+         FontSize="13"
+         FontWeight="Medium"
+         FontFamily="Montserrat"                            
+         Foreground="Black"
+         BorderBrush="Black"
+         BorderThickness="0,0,0,2"
+         Height="25"
+            Width="150"
+         VerticalContentAlignment="Center"
+        Margin="10,0,0,0">
+            </DatePicker>
+
+            <TextBlock Text="по :"
+       Foreground="Black"
+       FontSize="12"
+       FontWeight="Medium"
+       FontFamily="Montserrat"
+       VerticalAlignment="Center"
+       Margin="20,0,0,0"/>
+
+            <DatePicker 
+        SelectedDate="{Binding EndDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+     FontSize="13"
+     FontWeight="Medium"
+     FontFamily="Montserrat"                            
+     Foreground="Black"
+     BorderBrush="Black"
+     BorderThickness="0,0,0,2"
+     Height="25"
+        Width="150"
+     VerticalContentAlignment="Center"
+    Margin="10,0,0,0">
+            </DatePicker>
+
+        </StackPanel>
+
+        <ScrollViewer  Grid.Row="1">
+            <StackPanel Grid.Row="1" Margin="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Отчет по продажам билетов (в рублях)" FontSize="14"
+                       FontWeight="Medium" VerticalAlignment="Center"/>
+                    <Button x:Name="btnShow" 
+                            Command="{Binding ShowReportMoneyCommand}"
+                            Grid.Column="1" Content="Показать" 
+                                        VerticalAlignment="Center" Margin="15,0,0,0"
+                            Style="{StaticResource CRUDButton}">
+                    </Button>
+
+                    <Button x:Name="btnSave" 
+                            Command="{Binding SaveReportMoneyCommand}"
+                            Grid.Column="1" Content="Скачать" Margin="15,0,0,0"
+                                        VerticalAlignment="Center"
+                            Style="{StaticResource CRUDButton}">
+                    </Button>
+                </StackPanel>
+                <lvc:PieChart Grid.Row="1" LegendLocation="Right" Width="750" 
+                      Height="250" Series="{Binding SeriesCollection}"
+                      HorizontalAlignment="Left">
+                </lvc:PieChart>
+                <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Отчет по заполненности мест каждого сеанса (в %)" FontSize="14"
+                       FontWeight="Medium" VerticalAlignment="Center"/>
+                    <Button x:Name="btnShow2" 
+                            Command="{Binding ShowReportSeatsCommand}"
+                            Grid.Column="1" Content="Показать" 
+                                        VerticalAlignment="Center" Margin="15,0,0,0"
+                            Style="{StaticResource CRUDButton}">
+                    </Button>
+
+                    <Button x:Name="btnSave2" 
+                            Command="{Binding SaveReportSeatsCommand}"
+                            Grid.Column="1" Content="Скачать" Margin="15,0,0,0"
+                                        VerticalAlignment="Center"
+                            Style="{StaticResource CRUDButton}">
+                    </Button>
+                </StackPanel>
+                <lvc:CartesianChart Grid.Row="1" LegendLocation="Right" Width="750" 
+                      Height="250" Series="{Binding SeriesCollection2}"
+                      HorizontalAlignment="Left">
+                </lvc:CartesianChart>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,295 @@
+﻿<Window x:Class="LoginForm.View.OrderView"
+        x:Name="OrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LoginForm.View"
+        xmlns:viewModel="clr-namespace:LoginForm.ViewModel"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        mc:Ignorable="d"
+        Title="OrderView" Height="420" Width="550"
+        MouseDown="Window_MouseDown"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True">
+
+    <Window.DataContext>
+        <viewModel:OrderViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <viewModel:AddViewModel x:Key="AddVM"/>
+        
+        <CollectionViewSource x:Key="GroupedSeats" Source="{Binding Seats}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Row"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+        <viewModel:SeatAvailabilityConverter x:Key="SeatAvailabilityConverter"/>
+        
+    </Window.Resources>
+
+    <Border CornerRadius="10" Background="{StaticResource BackColor}"
+    BorderBrush="{StaticResource BorderColor}" BorderThickness="3">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Купить билет" Foreground="{StaticResource FontColor}"
+                           FontSize="15" FontFamily="Montserrat"
+                           Grid.Column="0" VerticalAlignment="Center"
+                           Margin="10, 0, 0, 0"/>
+                <Button x:Name="btnMinimize" Grid.Column="2" Content="-"
+                    Cursor="Hand" FontFamily="Montserrat" FontSize="16"
+                    BorderThickness="0" Foreground="Black"
+                    Click="btnMinimize_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background"
+                Value="{StaticResource ButtonColorLight}"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource ButtonColorSelect}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="25" Height="25"
+                CornerRadius="3"
+                Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button x:Name="btnClose" Grid.Column="3" Content="X"
+                    Cursor="Hand" FontFamily="Montserrat" FontSize="12"
+                     BorderThickness="0" Foreground="Black"
+                    Click="btnClose_Click" IsCancel="True">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background"
+                Value="{StaticResource ButtonColorDark}"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource ButtonColorSelect}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="25" Height="25"
+                CornerRadius="3"
+                Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
+                <Grid>
+                    <fa:IconImage Icon="Square" Stretch="Fill" Width="270" Height="60"/>
+                    <TextBlock Text="Экран" FontSize="16" VerticalAlignment="Center"
+                                HorizontalAlignment="Center"/>
+                </Grid>
+                <ItemsControl ItemsSource="{Binding Source={StaticResource GroupedSeats}}"
+                                  HorizontalAlignment="Center"
+                                  Margin="10">
+                    <ItemsControl.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="Medium"
+                                               VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ItemsControl.GroupStyle>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <ToggleButton Content="{Binding Number}" FontFamily="Montserrat" FontSize="12"
+                                            BorderThickness="0" Foreground="Black"
+                                            Cursor="Hand" Command="{Binding DataContext.SelectSeatCommand,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                            Margin="5" CommandParameter="{Binding}">
+                                    <!--IsEnabled="{Binding Converter={StaticResource SeatAvailabilityConverter}, ConverterParameter={Binding DataContext.Session, RelativeSource={RelativeSource AncestorType={x:Type Window}}}}"-->
+                                    <ToggleButton.ToolTip>
+                                        <ToolTip >
+                                            <TextBlock>
+                                                <Run Text="Цена: "/>
+                                                <Run Text="{Binding Cost}"/>
+                                            </TextBlock>
+                                        </ToolTip>
+                                    </ToggleButton.ToolTip>
+                                    <ToggleButton.Style>
+                                        <Style TargetType="ToggleButton">
+                                            <Setter Property="Background" Value="{StaticResource ButtonColorDark}" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource NavColor5}" />
+                                                </Trigger>
+                                                <DataTrigger Value="False">
+                                                    <DataTrigger.Binding>
+                                                        <MultiBinding Converter="{StaticResource SeatAvailabilityConverter}">
+                                                            <Binding />
+                                                            <Binding Path="DataContext.Session" RelativeSource="{RelativeSource AncestorType={x:Type Window}}"/>
+                                                        </MultiBinding>
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="Background" Value="Gray" />
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ToggleButton.Style>
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border Width="25" Height="25"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Content="Купить" Style="{StaticResource CRUDButton}"
+                        Command="{Binding OpenPopUpCommand}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center">
+                <TextBlock Text="Вы выбрали" HorizontalAlignment="Center" Margin="10"
+                           FontSize="15" FontWeight="Medium"/>
+                <Image Source="{Binding Session.Poster}" Margin="10"
+                       Width="130" Height="180"/>
+                <TextBlock Text="{Binding Session.Name}" TextWrapping="Wrap"
+                           FontSize="16" FontWeight="Medium"/>
+                <TextBlock Text="{Binding Session.Date, StringFormat='Дата: {0:dd.MM.yyyy}'}"/>
+                <TextBlock Text="{Binding Session.Date, StringFormat='Время: {0:HH:ss}'}"/>
+                <TextBlock Text="{Binding Session.Halls, StringFormat='Зал: {0}'}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Session.Duration, StringFormat='Длительность: {0}'}"/>
+                    <TextBlock Text="{Binding Session.DurationTime, StringFormat=' ({0:hh\\:mm})'}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Место: "/>
+                    <TextBlock>
+                    </TextBlock>
+                    <ItemsControl ItemsSource="{Binding SelectedSeats, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Number, StringFormat='{}  {0}    '}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Итого к оплате:" FontWeight="Medium"/>
+                    <TextBlock Text="{Binding Sum, StringFormat=' {0} р.'}" FontWeight="Bold"/>
+                </StackPanel>
+            </StackPanel>
+            
+            <Popup x:Name="popup" IsOpen="{Binding PopupIsOpen}" Placement="Center" StaysOpen="True">
+                    <Border BorderBrush="{StaticResource BorderColor}" BorderThickness="2" 
+                            Background="{StaticResource BackColor}" Width="300" Height="300">
+                    <StackPanel HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Введите данные о покупке" Padding="10" Margin="0,0,55,0"
+                                       FontSize="15" FontWeight="Medium"/>
+                            <Button x:Name="popupClose" Grid.Column="3" Content="X"
+                                Cursor="Hand" FontFamily="Montserrat" FontSize="12"
+                                 BorderThickness="0" Foreground="Black"
+                                Command="{Binding ClosePopUpCommand}" IsCancel="True"
+                                HorizontalAlignment="Right">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="{StaticResource ButtonColorDark}"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource ButtonColorSelect}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="25" Height="25"
+                                        CornerRadius="3"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                     HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="Пользователь: " Padding="10"/>
+                            <TextBlock Text="{Binding User.Login}" Padding="10"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="Имя: "/>
+                            <TextBlock Text="{Binding User.Name}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="Эл. почта: "/>
+                            <TextBlock Text="{Binding User.Email}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="Промокод: "/>
+                            <TextBox Text="{Binding Promocode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource txtboxAccount}"/>
+                        </StackPanel>
+                        <Button Style="{StaticResource CRUDButton}" Content="Применить промокод"
+                                Command="{Binding ApplyPromocodeCommand}"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="Итого к оплате:" Padding="10" FontSize="14" FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Sum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=' {0} р.'}" Padding="10"
+                                       FontSize="14" FontWeight="Bold"/>
+                        </StackPanel>
+                        <Button Style="{StaticResource CRUDButton}" Content="Подтвердить покупку"
+                                CommandParameter="{Binding ElementName=OrderWindow}"
+                                Command="{Binding Source={StaticResource AddVM}, Path=OkCommand}"/>
+
+                    </StackPanel>
+                </Border>
+                </Popup>
+            </Grid>
+    </Border>
+</Window>

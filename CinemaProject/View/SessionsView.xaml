@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="LoginForm.View.SessionsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LoginForm.View"
+             xmlns:viewModel="clr-namespace:LoginForm.ViewModel"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <viewModel:SessionsViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"
+                VerticalAlignment="Top"
+                Grid.Column="0" Margin="5,10,0,0">
+                <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="{StaticResource FontColor}"/>
+                <DatePicker SelectedDate="{Binding SearchDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                            Width="280" FontSize="13">
+                </DatePicker>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                    FlowDirection="RightToLeft" Grid.ColumnSpan="2" Margin="0,0,15,0">
+
+                <Button x:Name="btnDelete" 
+        Command="{Binding DeleteSessionViewCommand}"
+        Grid.Column="1" Content="Удалить" 
+        Style="{StaticResource CRUDButton}">
+                </Button>
+
+                <Button x:Name="btnUpdate" 
+        Command="{Binding UpdateSessionViewCommand}"
+        Grid.Column="1" Content="Изменить" 
+        Style="{StaticResource CRUDButton}">
+                </Button>
+
+                <Button x:Name="btnAdd" 
+        Command="{Binding AddSessionViewCommand}"
+        Grid.Column="1" Content="Добавить" 
+        Style="{StaticResource CRUDButton}">
+                </Button>
+
+                <Button x:Name="btnSearch" 
+        Command="{Binding SearchSessionViewCommand}"
+        Grid.Column="1" Content="Найти" 
+        Style="{StaticResource CRUDButton}">
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Border Grid.Row="1"
+        Background="{StaticResource BackColor}"
+        CornerRadius="10" 
+        Padding="10">
+
+            <!--<DataGrid ColumnWidth="*"
+          Background="{StaticResource NavColor8}"
+          BorderThickness="0"
+          Name="SessionsList"
+          ItemsSource="{Binding AllSessions}"
+          SelectedItem="{Binding SelectedSession, Mode=TwoWay}">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Padding" Value="10,0,0,10"/>
+                        <Setter Property="FontFamily" Value="Montserrat"/>
+                        <Setter Property="FontSize" Value="15"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontFamily" Value="Montserrat"/>
+                    </Style>
+                </DataGrid.RowStyle>
+            </DataGrid>-->
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ListBox Background="Transparent"
+                        ItemsSource="{Binding AllSessions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="5" BorderThickness="0"
+                        SelectedItem="{Binding SelectedSession, Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Фото" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" FontSize="14"/>
+                                <Image Width="100" Height="120" Margin="5,0,5,5" Source="{Binding Poster}"/>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Medium" Margin="10,0,10,2" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Duration, StringFormat='Длительность:  {0}'}" Margin="10,0,10,2" FontSize="14"/>
+                                    <TextBlock Text="{Binding Date, StringFormat='Дата и время:  {0:dd.MM.yyyy HH:mm}'}" Margin="10,0,10,2" FontSize="14"/>
+                                    <TextBlock Text="{Binding Halls, StringFormat='Номер зала:  {0}'}" Margin="10,0,10,2" FontSize="14"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

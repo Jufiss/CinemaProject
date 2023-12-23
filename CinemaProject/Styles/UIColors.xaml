@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!--Background colors-->
+    <SolidColorBrush x:Key="BackColor">#ffd5cd</SolidColorBrush>
+    <SolidColorBrush x:Key="BackColorNav">#efbbcf</SolidColorBrush>
+    <!--Border colors-->
+    <SolidColorBrush x:Key="BorderColor">#8675a9</SolidColorBrush>
+    <!--Navigation colors-->
+    <SolidColorBrush x:Key="NavColor1">#A8E6CF</SolidColorBrush>
+    <SolidColorBrush x:Key="NavColor2">#DCEDC1</SolidColorBrush>
+    <SolidColorBrush x:Key="NavColor3">#a1e4ff</SolidColorBrush>
+    <SolidColorBrush x:Key="NavColor4">#C3BEF0</SolidColorBrush>
+    <SolidColorBrush x:Key="NavColor5">#8bffce</SolidColorBrush>
+    <SolidColorBrush x:Key="NavColor6">#FEF0FF</SolidColorBrush>
+    <SolidColorBrush x:Key="NavColor7">#D6C8FF</SolidColorBrush>
+    <SolidColorBrush x:Key="NavColor8">#C79ECF</SolidColorBrush>
+    <SolidColorBrush x:Key="NavColor9">#7E6BC4</SolidColorBrush>
+    <!--Button colors-->
+    <SolidColorBrush x:Key="ButtonColorLight">#c3aed6</SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonColorDark">#8675a9</SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonColorSelect">#9d65c9</SolidColorBrush>
+    
+    <!--Font colors-->
+    <SolidColorBrush x:Key="FontColor">#3c2946</SolidColorBrush>
+    
+</ResourceDictionary>

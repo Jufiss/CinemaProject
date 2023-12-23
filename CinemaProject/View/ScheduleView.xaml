@@ -1,0 +1,202 @@
+﻿<UserControl x:Class="LoginForm.View.ScheduleView"
+             x:Name="Schedule"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LoginForm.View"
+             xmlns:viewModel="clr-namespace:LoginForm.ViewModel"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <viewModel:ScheduleViewModel/>
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <viewModel:OrderViewModel x:Key="OrderVM"/>
+        <viewModel:SessionInfoConverter x:Key="SessionInfoConverter"/>
+        <viewModel:SessionAvailabilityConverter x:Key="SessionAvailabilityConverter" />
+        <!--<CollectionViewSource x:Key="GroupedSessions" Source="{Binding Sessions}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Name"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>-->
+    </UserControl.Resources>
+
+    <Border Grid.Row="1"
+        Background="{StaticResource BackColor}"
+        CornerRadius="10" 
+        Padding="10"
+        Margin="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--Dates-->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="2">
+                <Button Style="{StaticResource Date}"
+                        Command="{Binding ShowFilmsOnDateCommand}"
+                        CommandParameter="{Binding TodayDate}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TodayDate}"/>
+                        <TextBlock Text="{Binding TodayDateWeek}"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource Date}"
+                        Command="{Binding ShowFilmsOnDateCommand}"
+                        CommandParameter="{Binding SecondDate}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding SecondDate}"/>
+                        <TextBlock Text="{Binding SecondDateWeek}"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource Date}"
+                        Command="{Binding ShowFilmsOnDateCommand}"
+                        CommandParameter="{Binding ThirdDate}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ThirdDate}"/>
+                        <TextBlock Text="{Binding ThirdDateWeek}"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource Date}"
+                        Command="{Binding ShowFilmsOnDateCommand}"
+                        CommandParameter="{Binding FourthDate}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FourthDate}"/>
+                        <TextBlock Text="{Binding FourthDateWeek}"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <!--Films-->
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Text="Фильтр по жанру: " Margin="20,10,10,0" FontSize="14" FontWeight="Medium"/>
+                        <ComboBox Margin="20,10,10,0" Width="200" Background="Transparent" 
+                                  ItemsSource="{Binding Genres}"
+                                  DisplayMemberPath="Name" 
+                                  SelectedValuePath="Name"
+                                  SelectedItem="{Binding SelectedGenre, Mode=TwoWay}"/>
+                        <Button Content="X" Command="{Binding CanselFilterGenreCommand}"
+                                Cursor="Hand" FontFamily="Montserrat" FontSize="12" VerticalAlignment="Bottom"
+                                 BorderThickness="0" Foreground="Black" ToolTip="Очистить фильтрацию">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background"
+                                            Value="{StaticResource ButtonColorDark}"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource ButtonColorSelect}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="25" Height="25"
+                                        CornerRadius="3"
+                                        Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <TextBlock Text="{Binding Error}" Width="150" FontSize="14" VerticalAlignment="Center"
+                                   Margin="15,3,0,0" Foreground="Red"/>
+                    </StackPanel>
+                    
+                    
+                    <ItemsControl ItemsSource="{Binding Sessions}"
+                         Background="Transparent"
+                         Margin="10"
+                         BorderThickness="0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button Background="Transparent" BorderThickness="0"
+                                        Width="120" Height="170" Grid.Column="0" 
+                                        HorizontalAlignment="Left" Margin="10"
+                                        Cursor="Hand" CommandParameter="{Binding Name}"
+                                        Command="{Binding DataContext.ShowFilmPageViewCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                                        <Image  Source="{Binding Poster}"/>
+                                    </Button>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Button FontSize="20" Margin="10,20,10,5" Background="Transparent"
+                                            HorizontalAlignment="Left"
+                                            Cursor="Hand" BorderThickness="0" CommandParameter="{Binding Name}"
+                                            Command="{Binding DataContext.ShowFilmPageViewCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                                            <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Medium" 
+                                               FontFamily="Montserrat" Foreground="Black" 
+                                               TextWrapping="Wrap"/>
+                                        </Button>
+                                        <TextBlock Text="{Binding Genres}" Margin="10,5,10,5" FontSize="14"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <fa:IconImage Icon="Clock" Width="12" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                                            <TextBlock Text="{Binding Duration}" Margin="5,0" VerticalAlignment="Center" FontSize="14"/>
+                                            <TextBlock Text="{Binding DurationTime, StringFormat='({0:hh\\:mm})'}" Margin="5,0" VerticalAlignment="Center" FontSize="14"/>
+                                        </StackPanel>
+
+                                        <ItemsControl ItemsSource="{Binding SessionTimes}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Button FontSize="14" Background="Transparent"
+                                                        BorderThickness="0" 
+                                                        IsEnabled="{Binding ., Converter={StaticResource SessionAvailabilityConverter}}"
+                                                        Command="{Binding Source={StaticResource OrderVM}, Path=MakeOrderCommand}"
+                                                        FontWeight="Medium" Margin="10,20,0,0">
+                                                        <Button.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource SessionInfoConverter}">
+                                                                <Binding Path="DataContext.Name" RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}"/>
+                                                                <Binding />
+                                                            </MultiBinding>
+                                                        </Button.CommandParameter>
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding StringFormat='{}{0:HH:mm}'}"/>
+                                                        </StackPanel>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <ItemsControl ItemsSource="{Binding HallList}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding StringFormat='Зал {0}'}" FontSize="12"
+                                                        FontWeight="Normal" Margin="15,0,5,0"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>
