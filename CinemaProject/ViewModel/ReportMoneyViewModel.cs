@@ -70,7 +70,7 @@ namespace LoginForm.ViewModel
 
             if (!string.IsNullOrEmpty(_filePath))
             {
-                GenerateCsvReport(_ordersBySessions, _filePath);
+                GenerateCsvReport1(_ordersBySessions, _filePath);
             }
         }
 
@@ -85,7 +85,7 @@ namespace LoginForm.ViewModel
 
             if (!string.IsNullOrEmpty(_filePath))
             {
-                GenerateCsvReport(_seatsBySessions, _filePath);
+                GenerateCsvReport2(_seatsBySessions, _filePath);
             }
         }
 
@@ -166,10 +166,11 @@ namespace LoginForm.ViewModel
                 {
                     if (count != 0)
                     {
+                        double roundedValue = Math.Round(count, 2);
                         SeriesCollection2.Add(new ColumnSeries
                         {
                             Title = session.Name + " " + session.Date,
-                            Values = new ChartValues<double> {count},
+                            Values = new ChartValues<double> { roundedValue },
                         });
                     }
                 }
@@ -192,7 +193,7 @@ namespace LoginForm.ViewModel
 
             return null;
         }
-        public static void GenerateCsvReport(Dictionary<string, double> data, string filePath)
+        public static void GenerateCsvReport1(Dictionary<string, double> data, string filePath)
         {
             var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -203,7 +204,22 @@ namespace LoginForm.ViewModel
             using (var writer = new StreamWriter(filePath, false, Encoding.UTF8))
             using (var csv = new CsvWriter(writer, csvConfig))
             {
-                csv.WriteRecords(data.Select(item => new { Name = item.Key, Count = item.Value }));
+                csv.WriteRecords(data.Select(item => new { Название_фильма = item.Key, Сумма_заказов = item.Value }));
+            }
+        }
+
+        public static void GenerateCsvReport2(Dictionary<string, double> data, string filePath)
+        {
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";",
+                ShouldUseConstructorParameters = _ => false
+            };
+
+            using (var writer = new StreamWriter(filePath, false, Encoding.UTF8))
+            using (var csv = new CsvWriter(writer, csvConfig))
+            {
+                csv.WriteRecords(data.Select(item => new { Сеанс = item.Key, Процент_заполненности = item.Value }));
             }
         }
     }

@@ -209,8 +209,8 @@
                                     Margin="0,0,10,0">
 
                             <Button Style="{StaticResource Account}" Tag="{StaticResource ButtonColorLight}"
-                                    Width="90" Command="{Binding ShowAccountViewCommand}">
-                                <TextBlock Text="Мой аккаунт"
+                                    Width="110" Command="{Binding LogOutViewCommand}">
+                                <TextBlock Text="Выйти из аккаунта"
                                            Foreground="{StaticResource FontColor}"
                                            FontFamily="Montserrat" FontSize="13"/>
                             </Button>

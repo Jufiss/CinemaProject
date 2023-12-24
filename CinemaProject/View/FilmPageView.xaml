@@ -13,7 +13,8 @@
 
     <UserControl.Resources>
         <viewModel:OrderViewModel x:Key="OrderVM"/>
-
+        <viewModel:SessionAvailabilityConverter x:Key="SessionAvailabilityConverter" />
+        
         <CollectionViewSource x:Key="GroupedSessions" Source="{Binding Session}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Date.Date"/>
@@ -93,6 +94,7 @@
                             <DataTemplate>
                                 <Button FontSize="14" Background="Transparent"
                                         BorderThickness="0" CommandParameter="{Binding}"
+                                        IsEnabled="{Binding ., Converter={StaticResource SessionAvailabilityConverter}}"
                                         Command="{Binding Source={StaticResource OrderVM}, Path=MakeOrderCommand}"
                                         FontWeight="Medium" Margin="10,20,0,0">
                                     <StackPanel>

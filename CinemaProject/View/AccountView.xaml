@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LoginForm.View"
              xmlns:viewModel="clr-namespace:LoginForm.ViewModel"
-             xmlns:customcontrols="clr-namespace:LoginForm.CustomControls"
+             xmlns:customcontrols="clr-namespace:LoginForm.CustomControls" xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -114,7 +114,17 @@
                         <TextBlock Text="Номер билета" FontSize="14" Margin="10,0,10,0"/>
                         <TextBlock Text="Информация о билете" FontSize="14" Margin="10,0,10,0"/>
                     </StackPanel>
-                    <ItemsControl ItemsSource="{Binding Orders}">
+                    <ItemsControl>
+                        <ItemsControl.Resources>
+                            <CollectionViewSource x:Key="SortedOrders" Source="{Binding Orders}">
+                                <CollectionViewSource.SortDescriptions>
+                                    <scm:SortDescription PropertyName="Date"/>
+                                </CollectionViewSource.SortDescriptions>
+                            </CollectionViewSource>
+                        </ItemsControl.Resources>
+                        <ItemsControl.ItemsSource>
+                            <Binding Source="{StaticResource SortedOrders}"/>
+                        </ItemsControl.ItemsSource>
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel/>

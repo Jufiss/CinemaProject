@@ -53,6 +53,7 @@ namespace LoginForm.ViewModel
             {
                 _searchDate = value;
                 OnPropertyChanged(nameof(SearchDate));
+                ExecuteSearchSessionViewCommand(null);
             }
         }
         public List<FilmModel> Films { get => films; set { films = value; OnPropertyChanged(nameof(Films)); } }
@@ -64,6 +65,7 @@ namespace LoginForm.ViewModel
         public ICommand UpdateSessionViewCommand { get; }
         public ICommand AddSessionViewCommand { get; }
         public ICommand DeleteSessionViewCommand { get; }
+        public ICommand LoadDataViewCommand { get; }
 
         public SessionsViewModel()
         {
@@ -74,6 +76,12 @@ namespace LoginForm.ViewModel
             AddSessionViewCommand = new ViewModelCommand(ExecuteAddSessionViewCommand);
             UpdateSessionViewCommand = new ViewModelCommand(ExecuteUpdateSessionViewCommand);
             DeleteSessionViewCommand = new ViewModelCommand(ExecuteDeleteSessionViewCommand);
+            LoadDataViewCommand = new ViewModelCommand(ExecuteLoadDataViewCommand);
+        }
+
+        private void ExecuteLoadDataViewCommand(object obj)
+        {
+            loadData();
         }
 
         private void ExecuteDeleteSessionViewCommand(object obj)
@@ -92,12 +100,31 @@ namespace LoginForm.ViewModel
 
             if (edit.ShowDialog() == true) // if ok
             {
+                if (Date == null)
+                {
+                    System.Windows.MessageBox.Show("Не все поля заполнены. Пожалуйста, заполните все поля о сеансе.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 SessionModel u = new SessionModel();
                 u.Id = SelectedSession.Id;
                 u.Date = DateTime.Parse(Date);
                 u.HallId = HallId;
                 u.FilmId = FilmId;
-                sessionRepository.Update(u);
+
+                var isFree = sessionRepository.IsFree(DateTime.Parse(Date), FilmId, HallId);
+                if (isFree == true)
+                {
+                    if (HallId != 0 && FilmId != 0)
+                    {
+                        sessionRepository.Update(u);
+                        MessageBox.Show("Сеанс успешно обновлен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                        System.Windows.MessageBox.Show("Не все поля заполнены. Пожалуйста, заполните все поля о сеансе.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                    System.Windows.MessageBox.Show("Этот зал и время уже заняты другим сеансом или дата показа фильма не совпадает.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             loadData();
         }
@@ -109,6 +136,12 @@ namespace LoginForm.ViewModel
 
             if (edit.ShowDialog() == true) // if ok
             {
+                if (Date == null)
+                {
+                    System.Windows.MessageBox.Show("Не все поля заполнены. Пожалуйста, заполните все поля о сеансе.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 SessionModel u = new SessionModel();
                 u.Date = DateTime.Parse(Date);
                 u.HallId = HallId;
@@ -118,7 +151,10 @@ namespace LoginForm.ViewModel
                 if (isFree == true)
                 {
                     if (HallId != 0 && FilmId != 0)
+                    {
                         sessionRepository.Add(u);
+                        MessageBox.Show("Сеанс успешно добавлен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                     else
                         System.Windows.MessageBox.Show("Не все поля заполнены. Пожалуйста, заполните все поля о сеансе.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
@@ -130,7 +166,8 @@ namespace LoginForm.ViewModel
 
         private void ExecuteSearchSessionViewCommand(object obj)
         {
-            AllSessions = sessionRepository.GetAllByDate(SearchDate);
+            if (SearchDate != DateTime.MinValue)
+                AllSessions = sessionRepository.GetAllByDate(SearchDate);
         }
 
         private void loadData()

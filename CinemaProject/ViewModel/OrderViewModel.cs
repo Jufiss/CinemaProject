@@ -13,6 +13,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Documents.DocumentStructures;
 using System.Threading;
+using System.Windows;
 
 namespace LoginForm.ViewModel
 {
@@ -162,6 +163,7 @@ namespace LoginForm.ViewModel
                 Sum = 0;
                 Promocode = string.Empty;
                 SelectedSeats.Clear();
+                MessageBox.Show("Билет успешно куплен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {

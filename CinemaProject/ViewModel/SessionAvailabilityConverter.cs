@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoginForm.Model;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,6 +17,12 @@ namespace LoginForm.ViewModel
             {
                 DateTime currentTime = DateTime.Now;
                 if (currentTime < sessionTime) 
+                    return true;
+            }
+            else if (value is SessionModel session)
+            {
+                DateTime currentTime = DateTime.Now;
+                if (currentTime < session.Date)
                     return true;
             }
 

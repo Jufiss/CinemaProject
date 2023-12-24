@@ -170,6 +170,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Категория" Style="{StaticResource txtAccount}"/>
                     <ComboBox Width="150" Margin="15,0,0,0" ItemsSource="{Binding Categories}"
+                              IsEnabled="{Binding IsCategoryEnabled}"
                               DisplayMemberPath="Name" SelectedValuePath="Id" x:Name="txtCategory"
                               SelectedValue="{Binding CategoryId, Mode=TwoWay}"/>
                 </StackPanel>

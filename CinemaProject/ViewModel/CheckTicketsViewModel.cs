@@ -17,7 +17,7 @@ namespace LoginForm.ViewModel
         private IOrderRepository orderRepository;
 
         public List<OrderModel> AllOrders { get => allOrders; set { allOrders = value; OnPropertyChanged(nameof(AllOrders)); } }
-        public string Text { get => _text; set { _text = value; OnPropertyChanged(nameof(Text)); } }
+        public string Text { get => _text; set { _text = value; OnPropertyChanged(nameof(Text)); ExecuteSearchTicketViewCommand(null); } }
         public ICommand SearchTicketViewCommand { get; }
         public CheckTicketsViewModel() 
         {
@@ -29,7 +29,8 @@ namespace LoginForm.ViewModel
 
         private void ExecuteSearchTicketViewCommand(object obj)
         {
-            AllOrders = orderRepository.SearchOrder(Convert.ToInt32(Text));
+            if (Text != null && Text != "")
+                AllOrders = orderRepository.SearchOrder(Convert.ToInt32(Text));
         }
     }
 }

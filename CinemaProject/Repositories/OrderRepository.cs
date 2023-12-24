@@ -148,16 +148,16 @@ namespace LoginForm.Repositories
         }
         public List<OrderModel> SearchOrder(long number)
         {
+            string searchString = number.ToString();
+
             var request = db.Orders
-                .Where(u => u.Number == number)
+                .Where(u => u.Number.ToString().Contains(searchString))
                 .Select(u => new OrderModel()
                 {
                     Id = u.Id,
                     Number=u.Number,
-                    //SeatId = u.SeatId,
                     SessionId = u.SessionId,
                     UserId  = u.UserId,
-                    //Seats = u.Seat.Number,
                     Sessions = u.Session.Film.Name,
                     Users = u.User.Login,
                     Date = u.Session.Date,

@@ -30,6 +30,34 @@
                 <DatePicker SelectedDate="{Binding SearchDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                             Width="280" FontSize="13">
                 </DatePicker>
+
+                <Button Grid.Column="2" Content="X" Margin="10,0,0,0"
+                    Cursor="Hand" FontFamily="Montserrat" FontSize="12"
+                     BorderThickness="0" Foreground="Black" ToolTip="Показать все сеансы"
+                    Command="{Binding LoadDataViewCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background"
+                Value="{StaticResource ButtonColorDark}"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource ButtonColorSelect}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="25" Height="25"
+                CornerRadius="3"
+                Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"
@@ -53,11 +81,6 @@
         Style="{StaticResource CRUDButton}">
                 </Button>
 
-                <Button x:Name="btnSearch" 
-        Command="{Binding SearchSessionViewCommand}"
-        Grid.Column="1" Content="Найти" 
-        Style="{StaticResource CRUDButton}">
-                </Button>
             </StackPanel>
         </Grid>
         <Border Grid.Row="1"

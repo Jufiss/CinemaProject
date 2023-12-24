@@ -62,12 +62,6 @@
         Grid.Column="1" Content="Добавить" 
         Style="{StaticResource CRUDButton}">
                 </Button>
-
-                <Button x:Name="btnSearch" 
-        Command="{Binding SerchUserViewCommand}"
-        Grid.Column="1" Content="Найти" 
-        Style="{StaticResource CRUDButton}">
-                </Button>
             </StackPanel>
         </Grid>
         <Border Grid.Row="1"

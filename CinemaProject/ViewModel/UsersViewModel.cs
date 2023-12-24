@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using LoginForm.Interfaces;
 using System.ComponentModel;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LoginForm.ViewModel
 {
@@ -35,6 +36,7 @@ namespace LoginForm.ViewModel
         private string _email;
         private string _name;
         private int _categoryId;
+        private bool _isCategoryEnabled;
         List<UserCategoryModel> _category;
 
         private UserModel _selectedUser;
@@ -65,6 +67,7 @@ namespace LoginForm.ViewModel
             {
                 _text = value;
                 OnPropertyChanged(nameof(TextBox));
+                ExecuteSerchUserViewCommand(null);
             }
         }
 
@@ -138,6 +141,7 @@ namespace LoginForm.ViewModel
         public ICommand DeleteUserViewCommand { get; }
         public ICommand UploadImageCommand { get; }
         public ICommand DeleteUserImageCommand { get; }
+        public bool IsCategoryEnabled { get => _isCategoryEnabled; set { _isCategoryEnabled = value; OnPropertyChanged(nameof(IsCategoryEnabled)); } }
 
         public UsersViewModel() 
         {
@@ -177,6 +181,10 @@ namespace LoginForm.ViewModel
 
         private void ExecuteUpdateUserViewCommand(object obj)
         {
+            if (userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name).CategoryId != 3)
+                IsCategoryEnabled = false;
+            else IsCategoryEnabled = true;
+
             AddUserView edit = new AddUserView();
             edit.DataContext = this;
             Name = SelectedUser.Name;
@@ -199,7 +207,7 @@ namespace LoginForm.ViewModel
                 u.Email = Email;
                 u.CategoryId = CategoryId;
                 u.Image = Image;
-                if (Name != null && Login != null && Password != null && Email != null)
+                if (Name != null && Login != null && Password != null && Email != null && CategoryId != 0)
                     userRepository.Update(u);
                 else
                     System.Windows.MessageBox.Show("Не все поля заполнены. Пожалуйста, заполните все поля о пользователе.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -209,6 +217,13 @@ namespace LoginForm.ViewModel
 
         private void ExecuteAddUserViewCommand(object obj)
         {
+            if (userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name).CategoryId != 3)
+            {
+                IsCategoryEnabled = false;
+                CategoryId = 1;
+            }
+            else IsCategoryEnabled = true;
+
             Name = null;
             Login = null;
             Password = null;
@@ -228,7 +243,7 @@ namespace LoginForm.ViewModel
                 u.CategoryId = CategoryId;
                 u.Image = Image;
 
-                if (Name != null && Login != null && Password != null && Email != null)
+                if (Name != null && Login != null && Password != null && Email != null && CategoryId != 0)
                     userRepository.Add(u);
                 else
                     System.Windows.MessageBox.Show("Не все поля заполнены. Пожалуйста, заполните все поля о пользователе.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -238,7 +253,8 @@ namespace LoginForm.ViewModel
 
         private void ExecuteSerchUserViewCommand(object obj)
         {
-            AllUsers = userRepository.Search(TextBox);
+            if (TextBox != null && TextBox != "")
+                AllUsers = userRepository.Search(TextBox);
         }
 
         private void loadData()

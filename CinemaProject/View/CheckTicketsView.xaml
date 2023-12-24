@@ -41,39 +41,6 @@
                      VerticalContentAlignment="Center"
                      Margin="5,5,0,0"></TextBox>
             </StackPanel>
-
-            <StackPanel Orientation="Horizontal"
-                    FlowDirection="RightToLeft" 
-                        Grid.ColumnSpan="2" Margin="0,0,15,0">
-
-                <Button x:Name="btnSearch" Command="{Binding SearchTicketViewCommand}"
-                    Grid.Column="1" Content="Найти"
-                Cursor="Hand" FontFamily="Montserrat" FontSize="12"
-                 BorderThickness="0" Foreground="{StaticResource FontColor}">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background"
-                                Value="{StaticResource ButtonColorDark}"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="{StaticResource ButtonColorSelect}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Width="100" Height="30"
-                                CornerRadius="3" Margin="7"
-                                Background="{TemplateBinding Background}">
-                                <ContentPresenter VerticalAlignment="Center"
-                                              HorizontalAlignment="Center"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-            </StackPanel>
         </Grid>
         <Border Grid.Row="1"
         Background="{StaticResource BackColor}"

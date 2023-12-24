@@ -3,6 +3,7 @@ using LoginForm.Model;
 using LoginForm.Models;
 using LoginForm.Repositories;
 using LoginForm.View;
+using Microsoft.Data.SqlTypes;
 using Microsoft.VisualBasic.Logging;
 using System;
 using System.Collections.Generic;
@@ -63,6 +64,7 @@ namespace LoginForm.ViewModel
             {
                 _text = value;
                 OnPropertyChanged(nameof(TextBox));
+                ExecuteSerchFilmViewCommand(null);
             }
         }
         public List<GenresModel> Genres
@@ -161,8 +163,13 @@ namespace LoginForm.ViewModel
                 u.Country = Country;
                 u.Plot = Plot;
                 u.Poster = Poster;
-                if (Name != null && Duration != 0 && Director != null && Country != null && Plot != null)
-                    filmRepository.Update(u);
+                if (Name != null && Duration != 0 && Director != null && Country != null && Plot != null && GenreId != 0)
+                {
+                    if (StartDate > EndDate)
+                        System.Windows.MessageBox.Show("Дата начала не может быть позже даты окончания проката. Пожалуйста, заполните даты о фильме корректно.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        filmRepository.Update(u);
+                }
                 else
                     System.Windows.MessageBox.Show("Не все поля заполнены. Пожалуйста, заполните все поля о фильме.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -196,8 +203,13 @@ namespace LoginForm.ViewModel
                 u.Country = Country;
                 u.Plot = Plot;
 
-                if (Name != null && Duration != 0 && Director != null && Country != null && Plot != null)
-                    filmRepository.Add(u);
+                if (Name != null && Duration != 0 && Director != null && Country != null && Plot != null && GenreId != 0)
+                {
+                    if (StartDate > EndDate)
+                        System.Windows.MessageBox.Show("Дата начала не может быть позже даты окончания проката. Пожалуйста, заполните даты о фильме корректно.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        filmRepository.Add(u);
+                }
                 else
                     System.Windows.MessageBox.Show("Не все поля заполнены. Пожалуйста, заполните все поля о фильме.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -205,7 +217,8 @@ namespace LoginForm.ViewModel
 
         private void ExecuteSerchFilmViewCommand(object obj)
         {
-            AllFilms = filmRepository.Search(TextBox);
+            if (TextBox != null && TextBox != "")
+                AllFilms = filmRepository.Search(TextBox);
         }
 
         private void loadData()

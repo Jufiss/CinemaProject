@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Security;
 using LoginForm.Interfaces;
 using LoginForm.View;
+using CinemaProject;
 
 namespace LoginForm.ViewModel
 {
@@ -21,11 +22,6 @@ namespace LoginForm.ViewModel
         private ViewModelBase _currentChildView;
         private string _caption;
         private IconChar _icon;
-
-        //private string _name;
-        //private string _login;
-        //private SecureString _password;
-        //private string _status;
 
         private IUserRepository userRepository;
 
@@ -68,33 +64,6 @@ namespace LoginForm.ViewModel
                 OnPropertyChanged(nameof(Icon));
             }
         }
-        //public string Name { 
-        //    get => _name;
-        //    set { 
-        //        _name = value;
-        //        OnPropertyChanged(nameof(Name));
-        //    }
-        //}
-        //public string Login { get => _login;
-        //    set { 
-        //        _login = value;
-        //        OnPropertyChanged(nameof(Login));
-        //    }
-        //}
-        //public SecureString Password { 
-        //    get => _password;
-        //    set
-        //    {
-        //        _password = value;
-        //        OnPropertyChanged(nameof(Password));
-        //    }
-        //}
-        //public string Status { get => _status;
-        //    set { 
-        //        _status = value;
-        //        OnPropertyChanged(nameof(Status));
-        //    }
-        //}
         public ICommand ShowUsersViewCommand { get; }
         public ICommand ShowScheduleViewCommand { get; }
         public ICommand ShowFilmsViewCommand { get; }
@@ -104,6 +73,7 @@ namespace LoginForm.ViewModel
         public ICommand ShowFilmPageViewCommand { get; }
         public ICommand ShowSoonFilmsViewCommand { get; }
         public ICommand ShowReportMoneyViewCommand { get; }
+        public ICommand LogOutViewCommand { get; }
         public Visibility VisibilityAdmin { get => _visibilityAdmin; set { _visibilityAdmin = value; OnPropertyChanged(nameof(VisibilityAdmin)); } }
 
         public Visibility VisibilityWorker { get => _visibilityWorker; set { _visibilityWorker = value; OnPropertyChanged(nameof(VisibilityWorker)); } }
@@ -122,11 +92,28 @@ namespace LoginForm.ViewModel
             ShowFilmPageViewCommand = new ViewModelCommand(ExecuteShowFilmPageViewCommand);
             ShowSoonFilmsViewCommand = new ViewModelCommand(ExecuteSoonFilmsViewCommand);
             ShowReportMoneyViewCommand = new ViewModelCommand(ExecuteShowReportMoneyViewCommand);
+            LogOutViewCommand = new ViewModelCommand(ExecuteLogOutViewCommand);
 
             ExecuteShowScheduleViewCommand(null);
 
             loadMenu();
         }
+
+        private void ExecuteLogOutViewCommand(object obj)
+        {
+            var loginView = new LoginView();
+            loginView.Show();
+
+            foreach (System.Windows.Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(MainWindow))
+                {
+                    window.Close();
+                    break;
+                }
+            }
+        }
+
         public void loadMenu()
         {
             CurrentUserModel = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
